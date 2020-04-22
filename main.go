@@ -24,7 +24,7 @@ func main() {
 
 	httpclient := &http.Client{}
 
-	req, err := http.NewRequest("GET", "https://reddit.com/r/copypasta/top/.json?sort=top&t=week&limit=10", nil)
+	req, err := http.NewRequest("GET", "https://reddit.com/r/copypasta/top/.json?sort=top&t=week&limit=100", nil)
 
 	if err != nil {
 		log.Println("error:", err)
@@ -52,7 +52,7 @@ func main() {
 	s, err := getData([]byte(body)) // turn the JSON response into a struct
 
 	rand.Seed(time.Now().UnixNano()) // Seed the random number
-	randomPost := rand.Intn(10 - 1) + 1 // TODO: make the first number (max) depend on how many "Children" structs are returned
+	randomPost := rand.Intn(100 - 1) + 1 // TODO: make the first number (max) depend on how many "Children" structs are returned
 
 	post := s.Data.Children[randomPost].Post
 	log.Println(post.Title, post.Text)
