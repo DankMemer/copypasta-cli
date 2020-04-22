@@ -4,20 +4,27 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"log"
+	"math/rand"
 	"net/http"
+	"time"
 )
 
 type ShitPost struct {
-	Title string `json:"data.children[0].data.title"` // TODO: This doesn't work, probably need to change the struct
-	Text string `json:"data.children[0].data.selftext"` // TODO: This doesn't work, probably need to change the struct
-	Kind string `json:"kind"` // This works fine
+	Data struct {
+		Children []struct {
+			Post struct {
+				Title string `json:"title"`
+				Text string `json:"selftext"`
+			} `json:"data"`
+		} `json:"children"`
+	} `json:"data"`
 }
 
 func main() {
 
 	httpclient := &http.Client{}
 
-	req, err := http.NewRequest("GET", "https://reddit.com/r/copypasta/top/.json?sort=top&t=week&limit=1", nil)
+	req, err := http.NewRequest("GET", "https://reddit.com/r/copypasta/top/.json?sort=top&t=week&limit=10", nil)
 
 	if err != nil {
 		log.Println("error:", err)
@@ -42,8 +49,13 @@ func main() {
 		return
 	}
 
-	s, err := getData([]byte(body))
-	log.Println(s)
+	s, err := getData([]byte(body)) // turn the JSON response into a struct
+
+	rand.Seed(time.Now().UnixNano()) // Seed the random number
+	randomPost := rand.Intn(10 - 1) + 1 // TODO: make the first number (max) depend on how many "Children" structs are returned
+
+	post := s.Data.Children[randomPost].Post
+	log.Println(post.Title, post.Text)
 }
 
 func getData(body []byte) (*ShitPost, error) {
