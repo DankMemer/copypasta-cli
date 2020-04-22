@@ -8,18 +8,31 @@ import (
 )
 
 type ShitPost struct {
-	Title string `json:"data.children[0].data.title"`
-	Text string `json:"data.children[0].data.selftext"`
-	Message string `json:"message"`
+	Title string `json:"data.children[0].data.title"` // TODO: This doesn't work, probably need to change the struct
+	Text string `json:"data.children[0].data.selftext"` // TODO: This doesn't work, probably need to change the struct
+	Kind string `json:"kind"` // This works fine
 }
 
 func main() {
-	res, err := http.Get("https://reddit.com/r/copypasta/top/.json?sort=top&t=week&limit=1")
+
+	httpclient := &http.Client{}
+
+	req, err := http.NewRequest("GET", "https://reddit.com/r/copypasta/top/.json?sort=top&t=week&limit=1", nil)
+
 	if err != nil {
 		log.Println("error:", err)
 		return
 	}
-	if res.StatusCode != 200 { // TODO: Why are we getting 429 after just a few reqs, not even close to the RL
+
+	req.Header.Add("User-Agent", "Meme-cli")
+
+	res, err := httpclient.Do(req)
+
+	if err != nil {
+		log.Println("error:", err)
+		return
+	}
+	if res.StatusCode != 200 {
 		log.Fatalln("Non-OK Status:", res.Status)
 	}
 
