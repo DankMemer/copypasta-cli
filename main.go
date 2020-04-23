@@ -7,6 +7,7 @@ import (
 	"math/rand"
 	"net/http"
 	"time"
+	"github.com/danielchatfield/go-chalk"
 )
 
 type ShitPost struct {
@@ -55,7 +56,8 @@ func main() {
 	randomPost := rand.Intn(100 - 1) + 1 // TODO: make the first number (max) depend on how many "Children" structs are returned
 
 	post := s.Data.Children[randomPost].Post
-	log.Println(post.Title, post.Text)
+	log.Println(chalk.Yellow(post.Title), "\n",
+	chalk.Blue(post.Text))
 }
 
 func getData(body []byte) (*ShitPost, error) {
