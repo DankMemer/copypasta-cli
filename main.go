@@ -25,7 +25,7 @@ func main() {
 
 	httpclient := &http.Client{}
 
-	req, err := http.NewRequest("GET", "https://reddit.com/r/copypasta/top/.json?sort=top&t=week&limit=100", nil)
+	req, err := http.NewRequest("GET", "https://www.reddit.com/r/copypasta/top/.json?sort=top&t=week&showmedia=false&mediaonly=false&is_self=true&limit=100", nil)
 
 	if err != nil {
 		log.Println("error:", err)
