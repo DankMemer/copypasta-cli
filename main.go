@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"math/rand"
@@ -56,7 +57,7 @@ func main() {
 	randomPost := rand.Intn(100 - 1) + 1 // TODO: make the first number (max) depend on how many "Children" structs are returned
 
 	post := s.Data.Children[randomPost].Post
-	log.Println(chalk.Yellow(post.Title), "\n",
+	fmt.Println(chalk.Yellow(post.Title), "\n",
 	chalk.Blue(post.Text))
 }
 
